@@ -2,7 +2,7 @@
 
 # Introduction
 
-This document provides an overview of the Apollo GraphQL API server that wraps the League of Legends (LoL) Data Dragon API using TypeScript and Node.js. The server exposes two GraphQL queries that allow users to retrieve information about champions in the game.
+This document provides an overview of the Apollo GraphQL API server that wraps the Coinlore Crypto API using TypeScript and Node.js. The server exposes two GraphQL queries that allow users to retrieve crypto information.
 
 # Prerequisites
 To run this project locally, you will need the following tools:
@@ -12,7 +12,7 @@ Visual Studio Code
 
 # Getting started
 
-1. Clone the repository `git clone git@bitbucket.org:sovtech/grad-23b-wamashudu.git`
+1. Clone the repository `git clone https://github.com/WamashuduSengani/coin-market.git`
 2. cd into the server directory
 3. Install the required dependencies by running `npm install` in your terminal while you are in the server directory.
 4. Start the server by running `npm start` in your terminal while you are in the server directory.
@@ -23,38 +23,41 @@ Once the server is running, you can interact with it using a GraphQL client such
 
 The server supports the following GraphQL queries:
 
-Query: `champions`
-The `champions` query retrieves all champions in the game. Here is an example query:
+Query: `coins`
+The `coins` query retrieves all coins in the Api. Here is an example query:
 
- query GetChampions {
-        champions {
-          id
-          name
-          title
-          image
-        }
-      }
-
-The query returns an array of champion objects, each containing the following fields
-
-1. id (String): the unique identifier of the champion.
-2. name (String): the name of the champion.
-3. title (String): the title of the champion.
-4. image (Object): an object containing information about the champion's image.
-
-Query: `champion`
-The champion query retrieves a specific champion in the game given their name. Here is an example query:
-
-query {
-  champion(name: "Ahri") {
-    id
-    name
-    title
-    image
+  query {
+    coins {
+      id
+      name
+      symbol
+      rank
+    }
   }
-}
+`
 
-The query returns a single champion object with the same fields as the champions query.
+The query returns coins data, each containing the following fields
+
+1. id 
+2. name 
+3. symbol 
+4. rank 
+
+Query: `coinMarket`
+The coinMarket query retrieves a specific coin in the API given their id. Here is an example query:
+
+ query GetCoinMarket($coinId: String!) {
+    coinMarket(coinId: $coinId) {
+      name
+      symbol
+      priceUsd
+      volume24
+      marketCapUsd
+    }
+  }
+`;
+
+The query returns a single coin.
 
 # Testing
 
@@ -65,7 +68,7 @@ Run the tests by running `npm test` in the server directory.
 
 # Conclusion
 
-The Apollo GraphQL API server that wraps the LoL Data Dragon API provides a simple and intuitive way to retrieve information about champions in the game. By following the instructions in this document, you should be able to use the server to enhance your League of Legends experience.
+The Apollo GraphQL API server that wraps the Coinlore Crypto API provides a simple and intuitive way to retrieve information about cryptocurrency in the API. By following the instructions in this document, you should be able to use the server to enhance your Coinlore Crypto API experience.
 
 # Client Documentation
 
@@ -77,22 +80,22 @@ Visual Studio Code
 
 # Getting started
 
-1. Clone the repository `git clone git@bitbucket.org:sovtech/grad-23b-wamashudu.git`
+1. Clone the repository `git clone https://github.com/WamashuduSengani/coin-market.git`
 2. cd into the client directory
 3. Install the required dependencies by running `npm install` in your terminal while you are in the client directory.
 4. Start the server by running `npm start` in your terminal while you are in the client directory.
-    `Open your web browser and navigate to http://localhost:3000 to view the app.`
+    `Open your web browser and navigate to the local host link provided to view the app.`
 
 # Features
 
 This SPA has the following features:
 
-1. Displays a list of all the champions in League of Legends on the Home page.
-2. Allows users to search champion by their name
-3. Allows users to click on a champion to view their details on a separate Detail page.
-4. Provides a Back button to allow users to navigate back to the Home page from the Detail page.
-5. Allows users to filter champions by their difficulty level
-6. Allows users to filter champion by their tags eg. Assassins, Fighters etc.
+1. Displays a list of all the Coins in the API
+2. Allows users to click on a Coin to view its market data on a separate detail page.
+3. Provides a Back button to allow users to navigate back to the Home page from the Detail page.
+4. Allows users to hide coins they don't want to see
+5. Allows users to unhide all the hidden coins
+
 
 # Technologies Used
 
@@ -111,4 +114,4 @@ To run the tests, use the following command:
 
 # Conclusion
 
-This project is a React Single Page App (SPA) that consumes a GraphQL API developed in the backend using TypeScript and Node.js. The SPA has a Home page that lists all the Champions, A search bar that allow users to search champions by name, filters to filter champions according to their tags and difficulties and a Detail page that displays a Champion's details when clicked. The project uses React, Apollo Client and GraphQL
+This project is a React Single Page App (SPA) that consumes a GraphQL API developed in the backend using TypeScript and Node.js. The SPA has a Home page that lists all the Coins in the Coinlore Crypto API, A button that allows users to hide specific coins, and a Detail page that displays a Coins's market data details when clicked. The project uses React, Apollo Client and GraphQL
