@@ -109,6 +109,14 @@ const useStyles = makeStyles((theme: Theme) => ({
         minWidth: 150,
         margin: theme.spacing(0, 1),
       },
+      moveButtonDown: {
+        backgroundColor: '#f44336',
+        color: '#fff',
+        borderRadius: '4px',
+        padding: '8px -4px', 
+        marginTop: '75px',
+
+      },
       
     
     }));

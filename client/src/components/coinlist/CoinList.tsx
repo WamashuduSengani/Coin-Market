@@ -1,20 +1,27 @@
-import { useQuery } from '@apollo/client';
-import React, { useEffect, useState } from 'react';
-import { GET_ALL_COINS } from '../../graphQL/allCoinsQuery';
-import CoinItem, { Coin } from './CoinItem';
-import CoinMarketData from './CoinMarketData';
-import { Box, Button, CircularProgress, Grid, Typography } from '@material-ui/core';
-import { ThemeProvider,  createTheme } from '@material-ui/core/styles';
-import { MonetizationOn, TrendingUp } from '@material-ui/icons';
-import useStyles from './CoinList.styles';
+import { useQuery } from "@apollo/client";
+import React, { useEffect, useState } from "react";
+import { GET_ALL_COINS } from "../../graphQL/allCoinsQuery";
+import CoinItem, { Coin } from "./CoinItem";
+import CoinMarketData from "./CoinMarketData";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Grid,
+  Typography,
+} from "@material-ui/core";
+import { ThemeProvider, createTheme } from "@material-ui/core/styles";
+import { MonetizationOn } from "@material-ui/icons";
+import useStyles from "./CoinList.styles";
+import AppBarr from "../appBar/AppBar";
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#4267B2',
+      main: "#4267B2",
     },
     secondary: {
-      main: '#F7931A',
+      main: "#F7931A",
     },
   },
 });
@@ -22,15 +29,13 @@ const theme = createTheme({
 const CoinList: React.FC = () => {
   const classes = useStyles();
   const { loading, error, data } = useQuery<{ coins: Coin[] }>(GET_ALL_COINS);
-  const [showAllCoins, setShowAllCoins] = useState(false);
   const [selectedCoin, setSelectedCoin] = useState<Coin | null>(null);
   const [hiddenCoins, setHiddenCoins] = useState<string[]>([]);
-  const [selectedCoinId, setSelectedCoinId] = useState<string>('');
-  const [selectedCoinName, setSelectedCoinName] = useState<string>('');
-
+  const [selectedCoinId, setSelectedCoinId] = useState<string>("");
+  const [selectedCoinName, setSelectedCoinName] = useState<string>("");
 
   useEffect(() => {
-    const hiddenCoinsString = localStorage.getItem('hiddenCoins');
+    const hiddenCoinsString = localStorage.getItem("hiddenCoins");
     if (hiddenCoinsString) {
       const hiddenCoinsArray = JSON.parse(hiddenCoinsString);
       setHiddenCoins(hiddenCoinsArray);
@@ -38,15 +43,11 @@ const CoinList: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('hiddenCoins', JSON.stringify(hiddenCoins));
+    localStorage.setItem("hiddenCoins", JSON.stringify(hiddenCoins));
   }, [hiddenCoins]);
 
-  const handleViewAllCoins = () => {
-    setShowAllCoins(true);
-  };
+  const handleBack = () => {
 
-  const handleBackToEightCoins = () => {
-    setShowAllCoins(false);
     setSelectedCoin(null);
   };
 
@@ -54,7 +55,6 @@ const CoinList: React.FC = () => {
     setSelectedCoin(coin);
     setSelectedCoinId(coin.id);
     setSelectedCoinName(coin.name);
-    console.log("Selected Coin ID:", coin.id);
   };
 
   const handleCardClose = () => {
@@ -63,13 +63,17 @@ const CoinList: React.FC = () => {
 
   const handleHideCoin = (coinId: string) => {
     setHiddenCoins([...hiddenCoins, coinId]);
-    console.log(`Coin '${coinId}' successfully hidden`);
   };
 
   if (loading) {
     return (
       <Box className={classes.container}>
-        <Box display="flex" alignItems="center" justifyContent="center" height="100vh">
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          height="100vh"
+        >
           <CircularProgress />
         </Box>
       </Box>
@@ -84,7 +88,9 @@ const CoinList: React.FC = () => {
     );
   }
 
-  const unhiddenCoins = data?.coins.filter((coin) => !hiddenCoins.includes(coin.id));
+  const unhiddenCoins = data?.coins.filter(
+    (coin) => !hiddenCoins.includes(coin.id)
+  );
 
   const handleUnhideCoins = () => {
     setHiddenCoins([]);
@@ -92,8 +98,10 @@ const CoinList: React.FC = () => {
 
   return (
     <ThemeProvider theme={theme}>
+      <AppBarr />
+
       <Box className={classes.container}>
-        <Box marginTop={14} marginBottom={2}>
+        <Box marginTop={3} marginBottom={2}>
           <Grid container spacing={2}>
             {!selectedCoin &&
               unhiddenCoins?.map((coin) => (
@@ -110,57 +118,34 @@ const CoinList: React.FC = () => {
         </Box>
 
         {selectedCoin && (
-        <Box position="relative" minHeight="100vh" className={classes.centeredCoin}>
-        <Box>
-        <Typography variant="h4" style={{ marginTop: '10px' }}>{selectedCoinName} Market Data</Typography>
-
-          <CoinMarketData coinId={selectedCoin.id} onBack={handleBackToEightCoins} />
-          <Button
-            className={classes.closeButton}
-            onClick={handleCardClose}
-            startIcon={<MonetizationOn />}
+          <Box
+            minHeight="100vh"
+            className={classes.centeredCoin}
+            style={{ marginTop: "-165px" }}
           >
-            Back
-          </Button>
-        </Box>
-      </Box>
-        )}
+            <Box>
+              <Typography variant="h4" style={{ marginTop: "50px" }}>
+                {selectedCoinName} Market Data
+              </Typography>
 
-        {!selectedCoin && (
-          <Box marginTop={2} textAlign="center">
-            {!showAllCoins && (
+              <CoinMarketData coinId={selectedCoin.id} onBack={handleBack} />
               <Button
-                className={classes.viewAllButton}
-                variant="contained"
-                color="primary"
-                onClick={handleViewAllCoins}
-                startIcon={<TrendingUp />}
+                className={classes.closeButton}
+                onClick={handleCardClose}
+                startIcon={<MonetizationOn />}
+                style={{ marginTop: "100px", marginLeft: "-200px" }}
               >
-                View All Coins
+                Back
               </Button>
-            )}
-            {showAllCoins && (
-              <Button
-                className={classes.backButton}
-                variant="contained"
-                color="secondary"
-                onClick={handleBackToEightCoins}
-                startIcon={<TrendingUp />}
-              >
-                Back to 8 Coins
-              </Button>
-            )}
+            </Box>
           </Box>
         )}
 
         {hiddenCoins.length > 0 && (
-          <Box marginTop={4} textAlign="center">
-            <Typography variant="body2" color="textSecondary">
-              Hidden Coins:
-            </Typography>
+          <Box mt={4} textAlign="center">
             <Box marginTop={1}>
               <Button
-                className={classes.hideButton}
+                className={`${classes.hideButton} ${classes.moveButtonDown}`}
                 variant="text"
                 onClick={handleUnhideCoins}
                 size="small"

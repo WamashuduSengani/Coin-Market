@@ -1,7 +1,7 @@
-import { Card, CardContent, Typography, Button } from '@material-ui/core';
-import { AttachMoney } from '@material-ui/icons';
-import React from 'react';
-import useStyles from './CoinList.styles';
+import { Card, CardContent, Typography, Button } from "@material-ui/core";
+import { AttachMoney } from "@material-ui/icons";
+import React from "react";
+import useStyles from "./CoinList.styles";
 
 export interface Coin {
   id: string;
@@ -17,19 +17,26 @@ interface CoinItemProps {
   onHide: (coinId: string) => void;
 }
 
-const CoinItem: React.FC<CoinItemProps> = ({ coin, onClick, isSelected, onHide }) => {
+const CoinItem: React.FC<CoinItemProps> = ({
+  coin,
+  onClick,
+  isSelected,
+  onHide,
+}) => {
   const classes = useStyles();
 
   const handleHide = (event: React.MouseEvent) => {
-    event.stopPropagation(); // Prevents the card from being selected
+    event.stopPropagation();
     onHide(coin.id);
-    // Display toast message
     console.log(`Coin '${coin.name}' successfully hidden`);
   };
 
   if (isSelected) {
     return (
-      <Card className={`${classes.card} ${classes.selectedCard}`} onClick={onClick}>
+      <Card
+        className={`${classes.card} ${classes.selectedCard}`}
+        onClick={onClick}
+      >
         <CardContent>
           <div className={classes.iconContainer}>
             <AttachMoney className={classes.icon} />
@@ -52,9 +59,6 @@ const CoinItem: React.FC<CoinItemProps> = ({ coin, onClick, isSelected, onHide }
           <Typography className={classes.name}>{coin.name}</Typography>
         </div>
         <Typography className={classes.symbol}>{coin.symbol}</Typography>
-      </CardContent>
-      <CardContent>
-        <Typography className={classes.rank}>Rank: {coin.rank}</Typography>
       </CardContent>
       <CardContent>
         <Button variant="outlined" color="secondary" onClick={handleHide}>
