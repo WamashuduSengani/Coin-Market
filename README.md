@@ -12,6 +12,8 @@ Visual Studio Code
 
 # Getting started
 
+Please note you need to have two separate terminals running the server and the client
+
 1. Clone the repository `git clone https://github.com/WamashuduSengani/coin-market.git`
 2. cd into the server directory
 3. Install the required dependencies by running `npm install` in your terminal while you are in the server directory.
